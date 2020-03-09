@@ -13,7 +13,7 @@
 
 
     <btn href="#!" class="btn btn-back btn-sm btn-vote btn-light positiveVote " value="1" answer_id="420">+</btn>
-    <btn href="#" class="btn btn-sm btn-default btn-points" answer_id="4201" disabled points="0">0</btn>
+    <btn href="#" class="btn btn-sm btn-default btn-points" answer_id="420" disabled points="0">0</btn>
     <btn href="#!" class="btn btn-sm btn-vote btn-light negativeVote" value="-1" answer_id="420">-</btn>
 
     <script>
@@ -34,15 +34,15 @@
                 //result object data
                 var answerId = $(this).attr("answer_id");
                 var value;
-                var clickedBtn = $(this);
 
-                var clickedAttr = clickedBtn.attr("clicked");
-                console.log("CLICKED");
-                console.log(clickedAttr);
-
-
+                var clickedBtn = $(this);        
                 var negBtn = $("btn.btn-vote.negativeVote[answer_id='" + answerId + "']")
                 var posBtn = $("btn.btn-vote.positiveVote[answer_id='" + answerId + "']")
+
+                var clickedAttr = clickedBtn.attr("clicked");
+                var posBtnClickedAttr = posBtn.attr("clicked");
+                var negBtnClickedAttr = negBtn.attr("clicked");
+
 
                 var pointsView = $("btn.btn-points[answer_id='" + answerId + "']")
                 var pointsOnSide = pointsView.attr("points");
@@ -74,8 +74,9 @@
 
                         clickedBtn.removeClass(greenBtn) //change colour to defaults
                         clickedBtn.addClass(defaultBtn);
-
-                        pointsView.text(pointsOnSide - 1); //change points
+                        var points = parseInt(pointsOnSide) - 1;
+                        pointsView.text(points); //change points
+                        pointsView.attr("points", points);
 
                         value = 0;
 
@@ -91,6 +92,8 @@
 
                         var points = parseInt(pointsOnSide) + 1;
                         pointsView.text(points); //change points
+                        pointsView.attr("points", points);
+
 
                         value = 1;
 
@@ -105,6 +108,7 @@
                 }
                 else if (clickedBtn.hasClass("negativeVote")) {
 
+                    var points;
                     if (typeof clickedAttr !== typeof undefined && clickedAttr !== false) {
 
                         //Negativce btn is already clicked. Here we click it again so we unclick it by changing colour to default and incrementing points value
@@ -112,9 +116,10 @@
                         clickedBtn.removeClass(redBtn); //change colour to defaults
                         clickedBtn.addClass(defaultBtn);
 
-                        var points = parseInt(pointsOnSide) + 1;
+                        points = parseInt(pointsOnSide) + 1;
 
                         pointsView.text(points); //change points
+                          pointsView.attr("points", points);
 
                         clickedBtn.removeAttr("clicked");  //remove 'clicked' flag
                         value = 0;
@@ -128,20 +133,25 @@
 
                         clickedBtn.addClass(redBtn);  //change colour to red
                         clickedBtn.removeClass(defaultBtn);
-
                         clickedBtn.attr("clicked", '')
+                        points = parseInt(pointsOnSide) - 1; 
 
                         //While clicking negativce btn, there might be the case that positive button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
 
-                        posBtn.removeClass(greenBtn); //change positive button colour to default
-                        posBtn.addClass(defaultBtn);
+                        if (typeof posBtnClickedAttr !== typeof undefined && posBtnClickedAttr !== false) {
 
-                        var points = parseInt(pointsOnSide) - 1;
+                            posBtn.removeClass(greenBtn); //change positive button colour to default
+                            posBtn.addClass(defaultBtn);
 
-                        pointsView.text(points); //change points
+                            points =- 1;                  
+                            posBtn.removeAttr('clicked'); //remove 'clicked' flag from positive button
+                  
+                        }
 
-                        posBtn.removeAttr('clicked'); //remove 'clicked' flag from positive button
-                        value = -1;
+                       pointsView.text(points); //change points
+                       pointsView.attr("points", points);
+                       value = -1;
+                      
                     }
                 }
 
