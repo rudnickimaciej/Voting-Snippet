@@ -26,42 +26,26 @@
 
             $(".btn-vote").click(function () {
 
-
-                //GET REFERENCES TO OBJECTS
-                //TWO VARIABLES WILL REFERENCE TO ONE BUTTON DEPENDING ON WHICH BUTTON WAS CLICKED
-
-
-                //result object data
+                //result object data that will be put in Json
                 var answerId = $(this).attr("answer_id");
                 var value;
 
+
+                //Button references (two variables will to one of the buttons depending on which button was clicked)
                 var clickedBtn = $(this);        
                 var negBtn = $("btn.btn-vote.negativeVote[answer_id='" + answerId + "']")
                 var posBtn = $("btn.btn-vote.positiveVote[answer_id='" + answerId + "']")
+                var pointsView = $("btn.btn-points[answer_id='" + answerId + "']")
+
+
+                //Clicked attributes
 
                 var clickedAttr = clickedBtn.attr("clicked");
                 var posBtnClickedAttr = posBtn.attr("clicked");
                 var negBtnClickedAttr = negBtn.attr("clicked");
 
-
-                var pointsView = $("btn.btn-points[answer_id='" + answerId + "']")
+                
                 var pointsOnSide = pointsView.attr("points");
-                console.log("POINTS ON SIDE");
-                console.log(pointsOnSide);
-                console.log("CLICKED BUTTON: ");
-                console.log(clickedBtn);
-
-                console.log("POSITIVE BUTTON");
-                console.log(posBtn);
-
-                console.log("NEGATIVE BUTTON: ");
-                console.log(negBtn);
-
-                console.log("POINTS VIEW: ");
-                console.log(pointsView);
-
-                console.log("clickedBtn.val()");
-                console.log(clickedBtn.attr("value"));
 
 
 
@@ -166,10 +150,10 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("Vote", "Vote")',
+                    url: 'your_url',
                     data: {
-                        value: value, // < note use of 'this' here
-                        user_id: '@Model.ActiveUserId',
+                        value: value, 
+                        user_id: "user_id_that_vote",
                         answer_id: answerId
                         //access_token: $("#access_token").val()
                     },
@@ -183,8 +167,8 @@
 
                     success: function (result) {
 
-
-                        console.log("RESULT POINTS: " + result.Points);
+                        // Your logic
+                       
                     },
                     error: function (jqxhr, status, exception) {
                         console.log('Exception:', exception);
