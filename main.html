@@ -18,9 +18,10 @@
 
     <script>
 
-        var defaultBtn = "btn-default";
+        var defaultBtn = "btn-light";
         var greenBtn = "btn-success";
         var redBtn = "btn-danger";
+    
         $(document).ready(function () {
 
             $(".btn-vote").click(function () {
@@ -72,7 +73,7 @@
                         clickedBtn.removeAttr("clicked"); //change 'clicked' flag
 
                         clickedBtn.removeClass(greenBtn) //change colour to defaults
-                        clickedBtn.addClass("btn-light");
+                        clickedBtn.addClass(defaultBtn);
 
                         pointsView.text(pointsOnSide - 1); //change points
 
@@ -85,8 +86,8 @@
 
                         clickedBtn.attr("clicked", '') //change 'clicked' flag
 
-                        clickedBtn.addClass("btn-success"); //change colour to green
-                        clickedBtn.removeClass("btn-light");
+                        clickedBtn.addClass(greenBtn); //change colour to green
+                        clickedBtn.removeClass(defaultBtn);
 
                         var points = parseInt(pointsOnSide) + 1;
                         pointsView.text(points); //change points
@@ -96,8 +97,8 @@
 
                         //While clicking positive btn, there might be the case that negative button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
 
-                        negBtn.removeClass("btn-danger"); //change colour to defaults
-                        negBtn.addClass("btn-light");
+                        negBtn.removeClass(redBtn); //change colour to defaults
+                        negBtn.addClass(defaultBtn);
 
                         negBtn.removeAttr('clicked'); //remove 'clicked' flag
                     }
@@ -108,8 +109,8 @@
 
                         //Negativce btn is already clicked. Here we click it again so we unclick it by changing colour to default and incrementing points value
 
-                        clickedBtn.removeClass("btn-danger"); //change colour to defaults
-                        clickedBtn.addClass("btn-light");
+                        clickedBtn.removeClass(redBtn); //change colour to defaults
+                        clickedBtn.addClass(defaultBtn);
 
                         var points = parseInt(pointsOnSide) + 1;
 
@@ -125,15 +126,15 @@
                         //Negativce btn was not clicked before. Here we click it by changing colour to red and decrement points;
 
 
-                        clickedBtn.addClass("btn-danger");  //change colour to red
-                        clickedBtn.removeClass("btn-light");
+                        clickedBtn.addClass(redBtn);  //change colour to red
+                        clickedBtn.removeClass(defaultBtn);
 
                         clickedBtn.attr("clicked", '')
 
                         //While clicking negativce btn, there might be the case that positive button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
 
-                        posBtn.removeClass("btn-success"); //change positive button colour to default
-                        posBtn.addClass("btn-light");
+                        posBtn.removeClass(greenBtn); //change positive button colour to default
+                        posBtn.addClass(defaultBtn);
 
                         var points = parseInt(pointsOnSide) - 1;
 
