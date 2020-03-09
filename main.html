@@ -17,6 +17,10 @@
     <btn href="#!" class="btn btn-sm btn-vote btn-light negativeVote" value="-1" answer_id="420">-</btn>
 
     <script>
+
+        var defaultBtn = "btn-default";
+        var greenBtn = "btn-success";
+        var redBtn = "btn-danger";
         $(document).ready(function () {
 
             $(".btn-vote").click(function () {
@@ -67,7 +71,7 @@
 
                         clickedBtn.removeAttr("clicked"); //change 'clicked' flag
 
-                        clickedBtn.removeClass("btn-success") //change colour to defaults
+                        clickedBtn.removeClass(greenBtn) //change colour to defaults
                         clickedBtn.addClass("btn-light");
 
                         pointsView.text(pointsOnSide - 1); //change points
