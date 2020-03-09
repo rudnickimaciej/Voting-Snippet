@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+
+
+    <btn href="#!" class="btn btn-back btn-sm btn-vote btn-light positiveVote " value="1" answer_id="420">+</btn>
+    <btn href="#" class="btn btn-sm btn-default btn-points" answer_id="4201" disabled points="0">0</btn>
+    <btn href="#!" class="btn btn-sm btn-vote btn-light negativeVote" value="-1" answer_id="420">-</btn>
+
+    <script>
+        $(document).ready(function () {
+
+            $(".btn-vote").click(function () {
+
+
+                //GET REFERENCES TO OBJECTS
+                //TWO VARIABLES WILL REFERENCE TO ONE BUTTON DEPENDING ON WHICH BUTTON WAS CLICKED
+
+
+                //result object data
+                var answerId = $(this).attr("answer_id");
+                var value;
+                var clickedBtn = $(this);
+
+                var clickedAttr = clickedBtn.attr("clicked");
+                console.log("CLICKED");
+                console.log(clickedAttr);
+
+
+                var negBtn = $("btn.btn-vote.negativeVote[answer_id='" + answerId + "']")
+                var posBtn = $("btn.btn-vote.positiveVote[answer_id='" + answerId + "']")
+
+                var pointsView = $("btn.btn-points[answer_id='" + answerId + "']")
+                var pointsOnSide = pointsView.attr("points");
+                console.log("POINTS ON SIDE");
+                console.log(pointsOnSide);
+                console.log("CLICKED BUTTON: ");
+                console.log(clickedBtn);
+
+                console.log("POSITIVE BUTTON");
+                console.log(posBtn);
+
+                console.log("NEGATIVE BUTTON: ");
+                console.log(negBtn);
+
+                console.log("POINTS VIEW: ");
+                console.log(pointsView);
+
+                console.log("clickedBtn.val()");
+                console.log(clickedBtn.attr("value"));
+
+
+
+                if (clickedBtn.hasClass("positiveVote")) {
+                    if (typeof clickedAttr !== typeof undefined && clickedAttr !== false) {
+
+                        //Positive btn is already clicked. Herem we click it again so we unclick it by changing colour to default and decrementing points value
+
+                        clickedBtn.removeAttr("clicked"); //change 'clicked' flag
+
+                        clickedBtn.removeClass("btn-success") //change colour to defaults
+                        clickedBtn.addClass("btn-light");
+
+                        pointsView.text(pointsOnSide - 1); //change points
+
+                        value = 0;
+
+                    }
+                    else {
+
+                        //Positive btn was not clicked before. Here we click it by changing colour to green and incrementing points;
+
+                        clickedBtn.attr("clicked", '') //change 'clicked' flag
+
+                        clickedBtn.addClass("btn-success"); //change colour to green
+                        clickedBtn.removeClass("btn-light");
+
+                        var points = parseInt(pointsOnSide) + 1;
+                        pointsView.text(points); //change points
+
+                        value = 1;
+
+
+                        //While clicking positive btn, there might be the case that negative button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
+
+                        negBtn.removeClass("btn-danger"); //change colour to defaults
+                        negBtn.addClass("btn-light");
+
+                        negBtn.removeAttr('clicked'); //remove 'clicked' flag
+                    }
+                }
+                else if (clickedBtn.hasClass("negativeVote")) {
+
+                    if (typeof clickedAttr !== typeof undefined && clickedAttr !== false) {
+
+                        //Negativce btn is already clicked. Here we click it again so we unclick it by changing colour to default and incrementing points value
+
+                        clickedBtn.removeClass("btn-danger"); //change colour to defaults
+                        clickedBtn.addClass("btn-light");
+
+                        var points = parseInt(pointsOnSide) + 1;
+
+                        pointsView.text(points); //change points
+
+                        clickedBtn.removeAttr("clicked");  //remove 'clicked' flag
+                        value = 0;
+
+                    }
+
+                    else {
+
+                        //Negativce btn was not clicked before. Here we click it by changing colour to red and decrement points;
+
+
+                        clickedBtn.addClass("btn-danger");  //change colour to red
+                        clickedBtn.removeClass("btn-light");
+
+                        clickedBtn.attr("clicked", '')
+
+                        //While clicking negativce btn, there might be the case that positive button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
+
+                        posBtn.removeClass("btn-success"); //change positive button colour to default
+                        posBtn.addClass("btn-light");
+
+                        var points = parseInt(pointsOnSide) - 1;
+
+                        pointsView.text(points); //change points
+
+                        posBtn.removeAttr('clicked'); //remove 'clicked' flag from positive button
+                        value = -1;
+                    }
+                }
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Vote", "Vote")',
+                    data: {
+                        value: value, // < note use of 'this' here
+                        user_id: '@Model.ActiveUserId',
+                        answer_id: answerId
+                        //access_token: $("#access_token").val()
+                    },
+                    beforeSend: function (data) {
+                        console.log(data);
+                        console.log(value);
+                        console.log("Active user id: ");
+                        console.log(data["user_id"]);
+                        console.log(data["answer_id"]);
+                    },
+
+                    success: function (result) {
+
+
+                        console.log("RESULT POINTS: " + result.Points);
+                    },
+                    error: function (jqxhr, status, exception) {
+                        console.log('Exception:', exception);
+                    }
+
+                });
+
+            });
+        });
+    </script>
+
+</body>
+
+
+</html>
