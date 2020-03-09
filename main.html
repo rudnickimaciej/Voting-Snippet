@@ -66,6 +66,8 @@
 
 
                 if (clickedBtn.hasClass("positiveVote")) {
+                    var points;
+
                     if (typeof clickedAttr !== typeof undefined && clickedAttr !== false) {
 
                         //Positive btn is already clicked. Herem we click it again so we unclick it by changing colour to default and decrementing points value
@@ -90,20 +92,26 @@
                         clickedBtn.addClass(greenBtn); //change colour to green
                         clickedBtn.removeClass(defaultBtn);
 
-                        var points = parseInt(pointsOnSide) + 1;
+                        points = parseInt(pointsOnSide) + 1;
                         pointsView.text(points); //change points
                         pointsView.attr("points", points);
 
 
                         value = 1;
 
+                        if (typeof negBtnClickedAttr !== typeof undefined && negBtnClickedAttr !== false) {
 
-                        //While clicking positive btn, there might be the case that negative button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
+                            //While clicking positive btn, there might be the case that negative button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
 
-                        negBtn.removeClass(redBtn); //change colour to defaults
-                        negBtn.addClass(defaultBtn);
+                            negBtn.removeClass(redBtn);
+                            negBtn.addClass(defaultBtn);
 
-                        negBtn.removeAttr('clicked'); //remove 'clicked' flag
+                            points += 1;
+                            negBtn.removeAttr('clicked');
+                        }
+
+                        pointsView.text(points); //change points
+                        pointsView.attr("points", points);
                     }
                 }
                 else if (clickedBtn.hasClass("negativeVote")) {
@@ -129,12 +137,12 @@
                     else {
 
                         //Negativce btn was not clicked before. Here we click it by changing colour to red and decrement points;
-
-
                         clickedBtn.addClass(redBtn);  //change colour to red
                         clickedBtn.removeClass(defaultBtn);
                         clickedBtn.attr("clicked", '')
                         points = parseInt(pointsOnSide) - 1; 
+
+
 
                         //While clicking negativce btn, there might be the case that positive button was already clicked. If so, we need to change it to default colour and remove 'clicked' flag
 
